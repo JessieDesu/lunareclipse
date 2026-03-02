@@ -4,23 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lunar Eclipse Countdown</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-      background: #800000; /* maroon */
-      color: #f5f5f5;
       text-align: center;
-      overflow: hidden;
+
+      /* Meteor GIF background */
+      background:
+        linear-gradient(
+          rgba(128, 0, 0, 0.85),
+          rgba(128, 0, 0, 0.85)
+        ),
+        url("meteor.gif");
+
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      color: #f5f5f5;
     }
 
     .container {
       padding: 24px;
-      position: relative;
+      z-index: 1;
     }
 
     .top-text {
@@ -56,35 +68,11 @@
       max-width: 260px;
       border-radius: 12px;
     }
-
-    /* Floating meteor */
-    .meteor {
-      position: absolute;
-      top: 20%;
-      left: -120px;
-      width: 100px;
-      animation: floatMeteor 10s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes floatMeteor {
-      0% {
-        transform: translateX(0) rotate(0deg);
-        opacity: 0;
-      }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% {
-        transform: translateX(120vw) rotate(360deg);
-        opacity: 0;
-      }
-    }
   </style>
 </head>
+
 <body>
   <div class="container">
-    <img src="meteor.gif" class="meteor" alt="Floating meteor" />
-
     <div class="top-text">LUNAR ECLIPSE STARTS IN</div>
     <div id="countdown">Loading…</div>
 
@@ -99,8 +87,8 @@
   <audio id="tickSound" src="tick.mp3" preload="auto"></audio>
 
   <script>
-    // Target date locked to Philippines time (UTC+08:00)
-    // March 3, 7:30 PM PH time = March 3, 11:30 UTC
+    // March 3, 7:30 PM Philippine Time (UTC+08:00)
+    // = March 3, 11:30 UTC
     const targetDate = new Date('2026-03-03T11:30:00Z').getTime();
 
     const countdownEl = document.getElementById('countdown');
@@ -123,7 +111,8 @@
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      countdownEl.textContent = `${days}d ${hours}h ${String(minutes).padStart(2,'0')}m ${String(seconds).padStart(2,'0')}s`;
+      countdownEl.textContent =
+        `${days}d ${hours}h ${String(minutes).padStart(2,'0')}m ${String(seconds).padStart(2,'0')}s`;
 
       tickSound.currentTime = 0;
       tickSound.play().catch(() => {});
